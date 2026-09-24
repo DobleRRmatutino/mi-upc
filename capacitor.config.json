@@ -1,0 +1,12 @@
+{
+  "appId": "pe.edu.upc.miupc",
+  "appName": "MI UPC",
+  "webDir": "dist",
+  "server": {
+    "url": "https://mi-upc.vercel.app",
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

@@ -1,0 +1,74 @@
+name: Build & Auto-Update Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Build MI UPC Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📦 Install npm dependencies
+        run: npm install
+
+      - name: 🏗️ Build Web App (Vite)
+        run: npm run build
+
+      - name: ☕ Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🤖 Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: ⚡ Sync Capacitor Android Platform
+        run: |
+          npx cap add android || true
+          npx cap sync android
+
+      - name: 🔨 Build Debug APK with Gradle
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+          cd ..
+          cp android/app/build/outputs/apk/debug/app-debug.apk ./MI_UPC.apk
+
+      - name: 📤 Upload APK Artifact (Descargable desde Actions)
+        uses: actions/upload-artifact@v4
+        with:
+          name: MI_UPC_Instalador_Android
+          path: ./MI_UPC.apk
+          if-no-files-found: error
+
+      - name: 🚀 Publish APK to GitHub Releases (Descarga Directa 1-Clic)
+        uses: softprops/action-gh-release@v2
+        continue-on-error: true
+        with:
+          tag_name: latest
+          name: "📱 MI UPC - APK Android Oficial (Auto-actualizable)"
+          body: |
+            ### 📱 MI UPC - Réplica Exacta Android (Pixel-Perfect)
+            - **Descarga directa:** Descarga el archivo `MI_UPC.apk` adjunto abajo e instálalo en tu celular Android.
+            - **⚡ Live Update Activado:** Esta app está vinculada en tiempo real a [https://mi-upc.vercel.app](https://mi-upc.vercel.app). Cada vez que hagas un cambio en GitHub, la app en tu celular se actualizará automáticamente sin necesidad de reinstalar nada.
+          files: ./MI_UPC.apk
+          prerelease: false
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
