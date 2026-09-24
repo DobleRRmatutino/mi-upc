@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { BlackboardIcon, ExploraIcon, TiendaCartIcon } from '../components/Icons3D';
-import { ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { BlackboardIcon, ExploraIcon, TiendaCartIcon, UpcFlame } from '../components/Icons3D';
+import { ChevronRight, ChevronDown, ChevronUp, Bell } from 'lucide-react';
 import { useTripleTap } from '../hooks/useTripleTap';
 
 export const HomeScreen = ({ data, onNavigateToTab, onSecretTrigger }) => {
@@ -20,26 +20,25 @@ export const HomeScreen = ({ data, onNavigateToTab, onSecretTrigger }) => {
         {/* MI UPC Logo (3 quick taps opens secret editor) */}
         <div 
           onClick={handleLogoTripleTap}
-          className="cursor-pointer active:scale-95 transition-transform select-none"
+          className="cursor-pointer active:scale-95 transition-transform select-none flex items-center gap-2"
           title="MI UPC"
         >
-          <img 
-            src="/images/logo_mi_upc.png" 
-            alt="MI UPC" 
-            className="h-8 object-contain" 
-          />
+          <span 
+            className="font-solano font-bold text-[24px] text-black tracking-wide leading-none pt-0.5"
+            style={{ WebkitTextStroke: '0.2px #000' }}
+          >
+            MI UPC
+          </span>
+          <span className="text-slate-300 font-light text-[22px] leading-none mb-0.5">|</span>
+          <UpcFlame size={24} />
         </div>
 
-        {/* Bell Button (Official iOS Round Style) */}
+        {/* Bell Button (Official iOS Round Style with crisp vector bell) */}
         <button 
-          className="relative w-10 h-10 rounded-full bg-white shadow-sm border border-slate-100 flex items-center justify-center active:scale-95 transition-transform"
+          className="relative w-10 h-10 rounded-full bg-white shadow-sm border border-slate-100/90 flex items-center justify-center active:scale-95 transition-transform"
           title="Notificaciones"
         >
-          <img 
-            src="/images/boton_campana.png" 
-            alt="Notificaciones" 
-            className="w-5 h-5 object-contain" 
-          />
+          <Bell size={21} strokeWidth={2.2} className="text-black" />
         </button>
       </div>
 
