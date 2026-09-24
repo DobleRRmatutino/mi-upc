@@ -7,8 +7,8 @@ export const AcademicoScreen = ({ data }) => {
 
   return (
     <div className="flex-1 overflow-y-auto no-scrollbar pb-6 bg-[#F5F7FB]">
-      {/* Top Header */}
-      <div className="flex items-center justify-between px-6 pt-3 pb-3 bg-white border-b border-slate-200/80 sticky top-0 z-20">
+      {/* Top Header (Safe Area Aware) */}
+      <div className="flex items-center justify-between px-6 pt-[calc(env(safe-area-inset-top,0px)+12px)] pb-3 bg-white border-b border-slate-200/80 sticky top-0 z-20">
         <div className="flex items-center gap-2">
           <span className="font-extrabold text-[20px] tracking-tight text-black">
             ACADÉMICO

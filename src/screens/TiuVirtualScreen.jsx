@@ -3,40 +3,43 @@ import { ChevronLeft } from 'lucide-react';
 import { useTripleTap } from '../hooks/useTripleTap';
 
 export const TiuVirtualScreen = ({ data, onBack, onSecretTrigger }) => {
-  // Live dynamic ticking clock starting at 09:21:40 or current time
-  const [currentTime, setCurrentTime] = useState("09:21:40");
-  const [dateString, setDateString] = useState("Jueves, 24 Sept 2026");
+  // Real live time and date sync matching the actual device time
+  const formatTime = (date) => {
+    const hh = date.getHours().toString().padStart(2, '0');
+    const mm = date.getMinutes().toString().padStart(2, '0');
+    const ss = date.getSeconds().toString().padStart(2, '0');
+    return `${hh}:${mm}:${ss}`;
+  };
+
+  const getFormattedDate = (date) => {
+    const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sept', 'Oct', 'Nov', 'Dic'];
+    const dayName = days[date.getDay()];
+    const dayNum = date.getDate();
+    const monthName = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${dayName}, ${dayNum} ${monthName} ${year}`;
+  };
+
+  const [currentTime, setCurrentTime] = useState(() => formatTime(new Date()));
+  const [dateString, setDateString] = useState(() => getFormattedDate(new Date()));
 
   // Triple tap on TIU VIRTUAL title triggers secret editor
   const handleTitleTripleTap = useTripleTap(onSecretTrigger);
 
   useEffect(() => {
-    let secondsCount = 40;
-    let minutesCount = 21;
-    let hoursCount = 9;
-
-    const timer = setInterval(() => {
-      secondsCount++;
-      if (secondsCount >= 60) {
-        secondsCount = 0;
-        minutesCount++;
-        if (minutesCount >= 60) {
-          minutesCount = 0;
-          hoursCount++;
-          if (hoursCount >= 24) hoursCount = 0;
-        }
-      }
-      const hh = hoursCount.toString().padStart(2, '0');
-      const mm = minutesCount.toString().padStart(2, '0');
-      const ss = secondsCount.toString().padStart(2, '0');
-      setCurrentTime(`${hh}:${mm}:${ss}`);
-    }, 1000);
-
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(formatTime(now));
+      setDateString(getFormattedDate(now));
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col bg-[#F9FAFE] relative overflow-hidden select-none pb-6">
+    <div className="flex-1 flex flex-col bg-[#F9FAFE] relative overflow-hidden select-none">
       {/* Background vector landscape from official assets */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {/* Sky upper part */}
@@ -44,11 +47,11 @@ export const TiuVirtualScreen = ({ data, onBack, onSecretTrigger }) => {
         {/* Soft lavender lower part */}
         <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-[#E9ECFF]" />
 
-        {/* Real UPC campus building artwork */}
+        {/* Real UPC campus building artwork positioned like official app */}
         <img
           src="/images/background.png"
           alt=""
-          className="absolute bottom-0 left-0 right-0 w-full h-auto object-cover object-bottom opacity-90"
+          className="absolute bottom-2 left-0 right-0 w-full h-[65%] object-cover object-center opacity-90 pointer-events-none"
         />
 
         {/* Animated clouds layer */}
@@ -74,40 +77,40 @@ export const TiuVirtualScreen = ({ data, onBack, onSecretTrigger }) => {
         </div>
       </div>
 
-      {/* Top Header Bar with Back Button and Title */}
-      <div className="flex items-center gap-2 px-4 pt-3 pb-2 z-20">
+      {/* Top Header Bar with Circular Floating Back Button and Title (Safe Area Aware) */}
+      <div className="flex items-center gap-3 px-5 pt-[calc(env(safe-area-inset-top,0px)+12px)] pb-2 z-20">
         <button
           onClick={onBack}
-          className="p-1 text-[#E30613] hover:opacity-80 active:scale-95 transition"
+          className="w-10 h-10 rounded-full bg-white shadow-md border border-slate-100/60 flex items-center justify-center text-[#E4002B] hover:opacity-90 active:scale-90 transition-transform"
           title="Regresar"
         >
-          <ChevronLeft size={28} strokeWidth={2.8} />
+          <ChevronLeft size={24} strokeWidth={2.8} />
         </button>
         <h2 
           onClick={handleTitleTripleTap}
-          className="font-solano font-bold text-[26px] text-[#1a1a1a] tracking-wide pt-0.5 cursor-pointer active:scale-95 transition-transform" 
+          className="font-solano font-bold text-[24px] sm:text-[26px] text-[#1a1a1a] tracking-wide pt-0.5 cursor-pointer active:scale-95 transition-transform select-none" 
           style={{ WebkitTextStroke: '0.2px #1a1a1a' }}
         >
           TIU VIRTUAL
         </h2>
       </div>
 
-      {/* Content Container */}
-      <div className="flex-1 flex flex-col items-center justify-between z-10 px-5 pt-1">
+      {/* Content Container (Safe Area Bottom Aware) */}
+      <div className="flex-1 flex flex-col items-center justify-between z-10 px-5 pt-1 pb-[calc(env(safe-area-inset-bottom,0px)+16px)] overflow-y-auto no-scrollbar">
         {/* Security Digital Clock and Date */}
         <div className="text-center w-full flex flex-col items-center">
           <div 
             className="bg-[#DBD9FF] rounded-[12px] px-8 py-1 shadow-2xs min-w-[220px]"
           >
             <div 
-              className="font-applied text-[38px] leading-tight font-medium text-[#1a1a1a] tracking-wide"
+              className="font-applied text-[36px] leading-tight font-medium text-[#1a1a1a] tracking-wide"
               style={{ WebkitTextStroke: '0.3px #1a1a1a' }}
             >
               {currentTime}
             </div>
           </div>
           <p 
-            className="font-applied text-[17px] font-semibold text-[#5b5b5f] mt-2.5"
+            className="font-applied text-[17px] font-semibold text-[#5b5b5f] mt-2"
             style={{ WebkitTextStroke: '0.2px #5b5b5f' }}
           >
             {dateString}
@@ -115,8 +118,8 @@ export const TiuVirtualScreen = ({ data, onBack, onSecretTrigger }) => {
         </div>
 
         {/* Center Student Avatar Photo */}
-        <div className="my-auto py-2">
-          <div className="w-[155px] h-[155px] rounded-full overflow-hidden ring-[3.5px] ring-white shadow-xl bg-slate-200">
+        <div className="my-auto py-2 shrink">
+          <div className="w-[135px] h-[135px] sm:w-[150px] sm:h-[150px] rounded-full overflow-hidden ring-[3.5px] ring-white shadow-xl bg-slate-200">
             <img
               src={data.student.avatarUrl}
               alt="Foto del Alumno TIU"
@@ -129,11 +132,12 @@ export const TiuVirtualScreen = ({ data, onBack, onSecretTrigger }) => {
         </div>
 
         {/* Floating Bottom Student Info Card */}
-        <div className="w-full max-w-[340px] bg-white rounded-[12px] px-5 py-4 shadow-[0px_1px_4px_rgba(0,0,0,0.06)] border border-slate-100 text-center mb-1">
-          {/* Student Name */}
+        <div className="w-full max-w-[340px] bg-white rounded-[16px] px-5 py-4 shadow-[0px_4px_16px_rgba(0,0,0,0.06)] border border-slate-100 text-center mb-1">
+          {/* Student Name on a single line */}
           <h1 
-            className="font-solano font-extrabold text-[36px] text-[#FB393C] uppercase leading-tight tracking-wide"
+            className="font-solano font-extrabold text-[21px] sm:text-[24px] text-[#FB393C] uppercase leading-tight tracking-wide whitespace-nowrap overflow-hidden text-ellipsis"
             style={{ WebkitTextStroke: '0.2px #FB393C' }}
+            title={data.student.fullName}
           >
             {data.student.fullName}
           </h1>

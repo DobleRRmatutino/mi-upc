@@ -15,8 +15,8 @@ export const HomeScreen = ({ data, onNavigateToTab, onSecretTrigger }) => {
 
   return (
     <div className="flex-1 overflow-y-auto no-scrollbar bg-[#F5F7FB] flex flex-col pb-4">
-      {/* Top Header Bar */}
-      <div className="flex items-center justify-between px-6 pt-3 pb-2">
+      {/* Top Header Bar (Safe Area Aware) */}
+      <div className="flex items-center justify-between px-6 pt-[calc(env(safe-area-inset-top,0px)+12px)] pb-2">
         {/* MI UPC Logo (3 quick taps opens secret editor) */}
         <div 
           onClick={handleLogoTripleTap}
@@ -30,14 +30,15 @@ export const HomeScreen = ({ data, onNavigateToTab, onSecretTrigger }) => {
           />
         </div>
 
-        {/* Bell Button (Official Asset) */}
+        {/* Bell Button (Official iOS Round Style) */}
         <button 
-          className="relative w-10 h-10 flex items-center justify-center active:scale-95 transition-transform"
+          className="relative w-10 h-10 rounded-full bg-white shadow-sm border border-slate-100 flex items-center justify-center active:scale-95 transition-transform"
+          title="Notificaciones"
         >
           <img 
             src="/images/boton_campana.png" 
             alt="Notificaciones" 
-            className="w-full h-full object-contain" 
+            className="w-5 h-5 object-contain" 
           />
         </button>
       </div>

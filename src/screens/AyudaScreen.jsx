@@ -3,7 +3,7 @@ import { Laptop, Phone, ChevronRight, MessageCircle } from 'lucide-react';
 
 export const AyudaScreen = () => {
   return (
-    <div className="flex-1 overflow-y-auto no-scrollbar bg-[#F5F7FB] px-6 pt-5 pb-6 flex flex-col">
+    <div className="flex-1 overflow-y-auto no-scrollbar bg-[#F5F7FB] px-6 pt-[calc(env(safe-area-inset-top,0px)+16px)] pb-6 flex flex-col">
       {/* Title Header */}
       <div>
         <h1 

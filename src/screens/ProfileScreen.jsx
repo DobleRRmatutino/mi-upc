@@ -16,9 +16,9 @@ export const ProfileScreen = ({ data, onOpenTiu, onSecretTrigger }) => {
 
   return (
     <div className="flex-1 overflow-y-auto no-scrollbar bg-white flex flex-col pb-6">
-      {/* Top Banner with Official Campus Illustration */}
+      {/* Top Banner with Official Campus Illustration extending under Safe Area */}
       <div onClick={handleTripleTap} className="relative w-full shrink-0 cursor-pointer select-none">
-        <div className="w-full h-[155px] overflow-hidden bg-[#EFF4FF]">
+        <div className="w-full h-[calc(155px+env(safe-area-inset-top,0px))] overflow-hidden bg-[#EFF4FF]">
           <img
             src="/images/campus_banner_perfil.png"
             alt="Campus UPC"
@@ -43,10 +43,11 @@ export const ProfileScreen = ({ data, onOpenTiu, onSecretTrigger }) => {
 
       {/* Profile Details Container */}
       <div className="pt-16 px-6 text-center flex-1 flex flex-col">
-        {/* Student Name with authentic Solano Gothic font */}
+        {/* Student Name with authentic Solano Gothic font on a single line */}
         <h1 
-          className="font-solano font-extrabold text-[32px] text-[#FB393C] uppercase tracking-wide leading-tight"
+          className="font-solano font-extrabold text-[23px] sm:text-[28px] text-[#FB393C] uppercase tracking-wide leading-tight whitespace-nowrap overflow-hidden text-ellipsis"
           style={{ WebkitTextStroke: '0.2px #FB393C' }}
+          title={data.student.fullName}
         >
           {data.student.fullName}
         </h1>

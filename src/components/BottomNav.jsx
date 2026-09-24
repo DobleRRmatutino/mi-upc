@@ -10,7 +10,7 @@ export const BottomNav = ({ activeTab, onSelectTab }) => {
   ];
 
   return (
-    <div className="w-full bg-white border-t border-slate-200/80 shrink-0 z-30 shadow-[0_-2px_10px_rgba(0,0,0,0.03)]">
+    <div className="w-full bg-white border-t border-slate-200/80 shrink-0 z-30 shadow-[0_-2px_10px_rgba(0,0,0,0.03)] pb-[env(safe-area-inset-bottom,0px)]">
       <div className="grid grid-cols-4 relative h-16">
         {tabs.map((tab) => {
           const Icon = tab.icon;
