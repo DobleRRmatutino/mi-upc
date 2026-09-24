@@ -1,25 +1,13 @@
 import React from 'react';
 
-// UPC Flame Logo
-export const UpcFlame = ({ size = 24, className = "" }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 100 100" 
-    fill="none" 
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path 
-      d="M50 6C50 30 26 40 26 66C26 81 37 92 50 92C63 92 74 81 74 66C74 46 60 36 55 18C64 32 68 42 66 56C62 42 51 33 50 6Z" 
-      fill="#E4002B" 
-    />
-    <path 
-      d="M50 42C48 50 42 56 42 66C42 74 46 80 50 80C54 80 58 74 58 66C58 54 52 48 50 42Z" 
-      fill="#FF4B60" 
-      opacity="0.9"
-    />
-  </svg>
+// Official UPC Flame Emblem Logo
+export const UpcFlame = ({ size = 25, className = "" }) => (
+  <img 
+    src="/images/upc.png" 
+    alt="UPC" 
+    style={{ width: size, height: size }}
+    className={`object-contain select-none shrink-0 ${className}`}
+  />
 );
 
 // 3D Pink Clock Icon for HORARIOS (Screenshot 1)
