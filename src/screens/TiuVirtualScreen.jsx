@@ -42,17 +42,17 @@ export const TiuVirtualScreen = ({ data, onBack, onSecretTrigger }) => {
     <div className="flex-1 flex flex-col bg-[#F9FAFE] relative overflow-hidden select-none">
       {/* Background vector landscape from official assets */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Sky upper part */}
-        <div className="absolute top-0 left-0 right-0 h-[70%] bg-[#F9FAFE]" />
-        {/* Soft lavender lower part */}
-        <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-[#E9ECFF]" />
+        {/* Seamless sky upper background */}
+        <div className="absolute inset-0 bg-[#F9FAFE]" />
 
-        {/* Real UPC campus building artwork positioned like official app */}
-        <img
-          src="/images/background.png"
-          alt=""
-          className="absolute bottom-6 left-0 right-0 w-full h-[62%] object-cover object-top opacity-90 pointer-events-none"
-        />
+        {/* Real UPC campus panorama artwork positioned behind student card */}
+        <div className="absolute bottom-0 left-0 right-0 h-[48%] min-h-[340px] pointer-events-none select-none overflow-hidden">
+          <img
+            src="/images/background.png"
+            alt="Campus UPC"
+            className="w-full h-full object-cover object-[81%_bottom] opacity-95 pointer-events-none select-none"
+          />
+        </div>
 
         {/* Animated clouds layer */}
         <div className="absolute top-0 left-0 w-[200%] h-full animate-clouds flex pointer-events-none opacity-85">
