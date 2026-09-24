@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Solano Gothic MVB';
+  src: url('/fonts/SolanoGothicMVBStd-Bd.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AppliedSans Pro';
+  src: url('/fonts/AppliedSansProRg.TTF') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+.font-solano {
+  font-family: 'Solano Gothic MVB', 'Oswald', sans-serif;
+}
+
+.font-applied {
+  font-family: 'AppliedSans Pro', 'Inter', sans-serif;
+}
+
+/* Custom subtle scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Cloud animation matching real TIU */
+@keyframes cloudMove {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-clouds {
+  animation: cloudMove 30s linear infinite;
+}
