@@ -49,6 +49,21 @@ jobs:
           fi
           npx cap sync android
 
+      - name: 🔧 Fix Duplicate Kotlin Classes
+        run: |
+          mkdir -p ~/.gradle/init.d
+          cat << 'EOF' > ~/.gradle/init.d/fix-kotlin.gradle
+          allprojects {
+              configurations.all {
+                  exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
+                  exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+              }
+          }
+          EOF
+          if [ -f "android/app/build.gradle" ]; then
+            echo "configurations.all { exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'; exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8' }" >> android/app/build.gradle
+          fi
+
       - name: 🔨 Build Debug APK with Gradle
         run: |
           cd android
