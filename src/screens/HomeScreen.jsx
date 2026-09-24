@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { BlackboardIcon, ExploraIcon, TiendaCartIcon, UpcFlame } from '../components/Icons3D';
 import { ChevronRight, ChevronDown, ChevronUp, Bell } from 'lucide-react';
 import { useTripleTap } from '../hooks/useTripleTap';
@@ -6,6 +6,36 @@ import { useTripleTap } from '../hooks/useTripleTap';
 export const HomeScreen = ({ data, onNavigateToTab, onSecretTrigger }) => {
   const [selectedDay, setSelectedDay] = useState('today'); // 'today' | 'tomorrow'
   const [courseExpanded, setCourseExpanded] = useState(false);
+  const videoRef = useRef(null);
+
+  // Enforce iOS Safari muted autoplay
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.defaultMuted = true;
+    video.muted = true;
+
+    const playVideo = () => {
+      video.play().catch(() => {});
+    };
+
+    playVideo();
+
+    const handleFirstTouch = () => {
+      if (video.paused) {
+        playVideo();
+      }
+    };
+
+    window.addEventListener('touchstart', handleFirstTouch, { once: true, passive: true });
+    window.addEventListener('click', handleFirstTouch, { once: true, passive: true });
+
+    return () => {
+      window.removeEventListener('touchstart', handleFirstTouch);
+      window.removeEventListener('click', handleFirstTouch);
+    };
+  }, []);
 
   // Triple tap on MI UPC logo triggers hidden editor
   const handleLogoTripleTap = useTripleTap(onSecretTrigger);
@@ -59,12 +89,16 @@ export const HomeScreen = ({ data, onNavigateToTab, onSecretTrigger }) => {
         {/* Animated Characters Video from UPC App */}
         <div className="relative w-36 h-24 overflow-hidden flex items-end justify-end select-none pointer-events-none">
           <video
+            ref={videoRef}
             src="/videos/greeting_characters.mp4"
             poster="/images/greeting_characters.png"
             autoPlay
             loop
             muted
             playsInline
+            webkit-playsinline="true"
+            disablePictureInPicture
+            disableRemotePlayback
             className="w-full h-full object-contain object-right"
           />
         </div>
